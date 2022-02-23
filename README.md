@@ -14,4 +14,5 @@ echo 23| gmx genrestr -f gmx_GMX.gro -fc 500 500 500 -n index.ndx
 
 # Eneregy mimisation
 gmx grompp -f inputs/em.mdp -c gmx_GMX.gro -p gmx_GMX.top -o em.tpr -v -n index.ndx 
+
 gmx mdrun -v -deffnm em

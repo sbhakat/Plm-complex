@@ -4,7 +4,7 @@
 
 Antechamber and parameter check commands
 
-'antechamber -i ../lig.mol2 -fi mol2 -o LIG.mol2 -fo mol2 -j 4 -at gaff -c bcc -nc 1'
+`antechamber -i ../lig.mol2 -fi mol2 -o LIG.mol2 -fo mol2 -j 4 -at gaff -c bcc -nc 1`
 
 parmchk2 -i LIG.mol2 -f mol2 -o LIG.frcmod
 

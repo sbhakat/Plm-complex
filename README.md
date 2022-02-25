@@ -21,4 +21,5 @@ Antechamber and parameter check commands
 
 # Activity:
 2BJU: 0.034 micromolar (Link: https://www.jbc.org/action/showPdf?pii=S0021-9258%2820%2967439-7)
+
 4YA8: 0.8 micromolar (Link: http://scripts.iucr.org/cgi-bin/paper?S2053230X15022049)

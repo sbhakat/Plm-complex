@@ -1,0 +1,23 @@
+source leaprc.protein.ff14SB
+loadamberparams frcmod.ionsjc_tip3p
+source leaprc.water.tip3p
+set default PBRadii mbondi2
+source leaprc.gaff
+LIG = loadmol2 LIG/LIG.mol2
+loadamberparams LIG/LIG.frcmod
+check LIG
+rec = loadPDB rec_noh.pdb
+bond rec.47.SG rec.52.SG
+bond rec.249.SG rec.285.SG
+check rec
+x = combine {rec LIG}
+saveAmberParm LIG LIG.top LIG.crd
+saveAmberParm rec rec.top rec.crd
+saveAmberParm x com.top com.crd
+savepdb x complex_gas.pdb
+charge x
+addIons2 x Na+ 0
+solvateOct x TIP3PBOX 10.0
+saveAmberParm x com_solvated.top com_solvated.crd
+savepdb x com_solvated.pdb
+quit

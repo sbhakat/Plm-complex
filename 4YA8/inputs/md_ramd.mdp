@@ -1,49 +1,53 @@
-integrator               = md    
-comm-mode                = Linear
-nstcomm                  = 100
-comm_grps                = System  
-tinit                    = 0.000
-dt                       = 0.002 
-nsteps                   = 20000000
-nstxout                  = 5000
-nstvout                  = 5000
-nstlog                   = 5000
-nstenergy                = 5000
-nstxtcout                = 5000
-nstfout 	 	             = 5000
-compressed-x-precision   = 1000
-xtc_grps                 = SYSTEM  
-pbc                      = xyz  
-rlist                    = 1.10
-coulombtype              = PME             
-cutoff-scheme            = Verlet
-fourierspacing           = 0.12
-pme_order                = 4
+title                   = OPLS Lysozyme NPT equilibration 
+; Run parameters
+integrator              = md        ; leap-frog integrator
+nsteps                  = 250000000    ; 500ns
+dt                      = 0.002     ; 2 fs
+; Output control
+nstxout                 = 0         ; suppress bulky .trr file by specifying 
+nstvout                 = 0         ; 0 for output frequency of nstxout,
+nstfout                 = 0         ; nstvout, and nstfout
+nstenergy               = 5000      ; save energies every 10.0 ps
+nstlog                  = 5000      ; update log file every 10.0 ps
+nstxout-compressed      = 5000      ; save compressed coordinates every 10.0 ps
+compressed-x-grps       = Protein_49W    ; save the whole system
+; Bond parameters
+continuation            = yes       ; Restarting after NPT 
+constraint_algorithm    = lincs     ; holonomic constraints 
+constraints             = h-bonds   ; bonds involving H are constrained
+lincs_iter              = 1         ; accuracy of LINCS
+lincs_order             = 4         ; also related to accuracy
+lincs_warnangle          = 60
+; Neighborsearching
+cutoff-scheme           = Verlet    ; Buffered neighbor searching
+ns_type                 = grid      ; search neighboring grid cells
+nstlist                 = 20        ; 20 fs, largely irrelevant with Verlet scheme
+rcoulomb                = 1.0       ; short-range electrostatic cutoff (in nm)
+rvdw                    = 1.0       ; short-range van der Waals cutoff (in nm)
+; Electrostatics
+coulombtype             = PME       ; Particle Mesh Ewald for long-range electrostatics
+pme_order               = 4         ; cubic interpolation
+fourierspacing          = 0.16      ; grid spacing for FFT
 ewald_geometry           = 3d
 ewald-rtol               = 1e-5
 ewald-rtol-lj            = 1e-5
-optimize_fft             = yes
-vdw-type                 = Cut-off
-vdw-modifier             = Potential-shift
-rvdw-switch              = 0.0
-rvdw                     = 1.00
-tcoupl                   =  Nose-Hoover 
-tc_grps                  = Protein_49W Water_and_ions
-tau_t                    = 1.0 1.0
-ref_t                    = 300 300
-Pcoupl                   = Parrinello-Rahman
-pcoupltype               = isotropic
-tau_p                    = 2
-compressibility          = 4.5e-5
-ref_p                    = 1 
-gen_vel                  = no  
-continuation = no
-constraints              = h-bonds
-constraint_algorithm     = lincs    
-lincs_order              = 4
-lincs_iter               = 1
-lincs_warnangle          = 60
-DispCorr                 = EnerPres
+; Temperature coupling is on
+tcoupl                  = Nose-Hoover              ; modified Berendsen thermostat
+tc-grps                 = Protein_49W Water_and_ions   ; two coupling groups - more accurate
+tau_t                   = 0.1     0.1           ; time constant, in ps
+ref_t                   = 300     300           ; reference temperature, one for each group, in K
+; Pressure coupling is on
+pcoupl                  = Parrinello-Rahman     ; Pressure coupling on in NPT
+pcoupltype              = isotropic             ; uniform scaling of box vectors
+tau_p                   = 2.0                   ; time constant, in ps
+ref_p                   = 1.0                   ; reference pressure, in bar
+compressibility         = 4.5e-5                ; isothermal compressibility of water, bar^-1
+; Periodic boundary conditions
+pbc                     = xyz       ; 3-D PBC
+; Dispersion correction
+DispCorr                = EnerPres  ; account for cut-off vdW scheme
+; Velocity generation
+gen_vel                 = no        ; Velocity generation is off 
 
 
 ramd                     = yes
@@ -54,4 +58,4 @@ ramd-r-min-dist          = 0.0025       ; nm
 ramd-force-out-freq      = 10
 ramd-max-dist            = 4.0         ; nm
 ramd-receptor            = Protein
-ramd-ligand              = INH
+ramd-ligand              = 49W
